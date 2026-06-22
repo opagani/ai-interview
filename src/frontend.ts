@@ -307,14 +307,21 @@ export function renderFrontend(baseUrl: string): string {
   <!-- QUIZ TAB -->
   <div id="tab-quiz" class="tab">
     <div class="card">
+      <nav style="margin-bottom:1.25rem">
+        <button class="active" onclick="selectTopic('typescript',this)">TypeScript</button>
+        <button onclick="selectTopic('react',this)">React</button>
+        <button onclick="selectTopic('python',this)">Python</button>
+        <button onclick="selectTopic('ai',this)">AI</button>
+      </nav>
+
       <div class="progress">
-        <span id="q-counter">Question 1 of 11</span>
-        <div class="progress-bar"><div class="progress-fill" id="q-progress" style="width:9%"></div></div>
+        <span id="q-counter">Question — of 11</span>
+        <div class="progress-bar"><div class="progress-fill" id="q-progress" style="width:0%"></div></div>
       </div>
 
       <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem">
         <span class="badge" id="q-badge">easy</span>
-        <span class="file-tag" id="q-file">src/shared/result.ts</span>
+        <span class="file-tag" id="q-file"></span>
       </div>
 
       <p class="question-text" id="q-text">Loading…</p>
@@ -400,13 +407,23 @@ export function renderFrontend(baseUrl: string): string {
   }
 
   // --- QUIZ ---
+  let currentTopic = 'typescript';
+
+  function selectTopic(topic, btn) {
+    currentTopic = topic;
+    usedIds = [];
+    btn.closest('nav').querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    loadQuestion();
+  }
+
   async function loadQuestion() {
     hintVisible = false; answerVisible = false;
     document.getElementById('q-hint').classList.remove('show');
     document.getElementById('q-answer').classList.remove('show');
 
     try {
-      const r = await fetch(BASE + '/api/quiz');
+      const r = await fetch(BASE + '/api/quiz/' + currentTopic);
       currentQ = await r.json();
       renderQuestion();
     } catch { document.getElementById('q-text').textContent = 'Failed to load question.'; }
@@ -419,7 +436,8 @@ export function renderFrontend(baseUrl: string): string {
     document.getElementById('q-counter').textContent = 'Question ' + usedIds.length + ' of 11';
     document.getElementById('q-progress').style.width = pct + '%';
     document.getElementById('q-text').textContent = currentQ.question;
-    document.getElementById('q-file').textContent = currentQ.file;
+    const fileEl = document.getElementById('q-file');
+    fileEl.textContent = currentQ.file ?? currentQ.topic ?? '';
     const badge = document.getElementById('q-badge');
     badge.textContent = currentQ.difficulty;
     badge.className = 'badge badge-' + currentQ.difficulty;
@@ -434,7 +452,7 @@ export function renderFrontend(baseUrl: string): string {
   async function toggleAnswer() {
     if (answerVisible) { document.getElementById('q-answer').classList.remove('show'); answerVisible = false; return; }
     try {
-      const r = await fetch(BASE + '/api/quiz/' + currentQ.id + '/answer');
+      const r = await fetch(BASE + '/api/quiz/' + currentTopic + '/' + currentQ.id + '/answer');
       const data = await r.json();
       document.getElementById('q-answer-text').textContent = data.answer;
       document.getElementById('q-answer').classList.add('show');

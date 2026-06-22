@@ -4,8 +4,20 @@
 import type { LinkRepository } from "./links/repository";
 import type { SlugGenerator } from "./links/service";
 import { createLink, getStats, resolveSlug } from "./links/service";
-import { QUESTIONS, findQuestion, findAnswer } from "./quiz";
+import { QUESTIONS as TS_Q, findQuestion as tsQ, findAnswer as tsA } from "./quiz-typescript";
+import { QUESTIONS as REACT_Q, findQuestion as reactQ, findAnswer as reactA } from "./quiz-react";
+import { QUESTIONS as PYTHON_Q, findQuestion as pythonQ, findAnswer as pythonA } from "./quiz-python";
+import { QUESTIONS as AI_Q, findQuestion as aiQ, findAnswer as aiA } from "./quiz-ai";
 import { renderFrontend } from "./frontend";
+
+type QuizTopic = "typescript" | "react" | "python" | "ai";
+
+const QUIZ = {
+  typescript: { questions: TS_Q, findQ: tsQ, findA: tsA },
+  react:      { questions: REACT_Q, findQ: reactQ, findA: reactA },
+  python:     { questions: PYTHON_Q, findQ: pythonQ, findA: pythonA },
+  ai:         { questions: AI_Q, findQ: aiQ, findA: aiA },
+} satisfies Record<QuizTopic, unknown>;
 
 export interface AppDeps {
   readonly repo: LinkRepository;
@@ -38,22 +50,27 @@ export function createApp(deps: AppDeps): FetchApp {
         });
       }
 
-      // GET /api/quiz — TypeScript interview questions from this codebase
-      if (pathname === "/api/quiz" && request.method === "GET") {
-        const all = url.searchParams.get("all");
-        if (all === "true") return json(QUESTIONS);
-        const q = QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)];
-        return json(q);
-      }
+      // GET /api/quiz/:topic          → random question
+      // GET /api/quiz/:topic?all=true → all questions
+      // GET /api/quiz/:topic/:id/answer
+      const quizTopicMatch = /^\/api\/quiz\/(typescript|react|python|ai)/.exec(pathname);
+      if (quizTopicMatch !== null && request.method === "GET") {
+        const topic = quizTopicMatch[1] as QuizTopic;
+        const quiz = QUIZ[topic];
 
-      // GET /api/quiz/:id/answer
-      const answerMatch = /^\/api\/quiz\/(\d+)\/answer$/.exec(pathname);
-      if (answerMatch !== null && request.method === "GET") {
-        const id = parseInt(answerMatch[1] as string, 10);
-        const question = findQuestion(id);
-        if (question === undefined) return json({ error: "not_found" }, 404);
-        const answer = findAnswer(id);
-        return json({ ...question, ...answer });
+        const answerMatch = /^\/api\/quiz\/(?:typescript|react|python|ai)\/(\d+)\/answer$/.exec(pathname);
+        if (answerMatch !== null) {
+          const id = parseInt(answerMatch[1] as string, 10);
+          const question = quiz.findQ(id);
+          if (question === undefined) return json({ error: "not_found" }, 404);
+          const answer = quiz.findA(id);
+          return json({ ...question, ...answer });
+        }
+
+        const all = url.searchParams.get("all");
+        if (all === "true") return json(quiz.questions);
+        const q = quiz.questions[Math.floor(Math.random() * quiz.questions.length)];
+        return json(q);
       }
 
       // POST /links — shorten a URL
