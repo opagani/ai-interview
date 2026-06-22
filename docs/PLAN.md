@@ -39,8 +39,8 @@
 
 ### 🔌 Adapters (parallel after wire — behind ports)
 
-- [ ] **T16** — `D1SessionRepository` in `src/sessions/repository.d1.ts` implementing the port over Drizzle/D1, plus drizzle-kit migration for the schema. · story:— · depends-on:T3,T5 · parallel-group:adapters
-- [ ] **T17** — `AnthropicLlmClient` in `src/llm/client.anthropic.ts` implementing the port: model `claude-sonnet-4-6` for both `chat` and `judge`, judge parses strict JSON with one retry on parse failure. · story:— · depends-on:T4,T7 · parallel-group:adapters
+- [x] **T16** — `D1SessionRepository` in `src/sessions/repository.d1.ts` implementing the port over Drizzle/D1, plus drizzle-kit migration for the schema. · story:— · depends-on:T3,T5 · parallel-group:adapters
+- [x] **T17** — `AnthropicLlmClient` in `src/llm/client.anthropic.ts` implementing the port: model `claude-sonnet-4-6` for both `chat` and `judge`, judge parses strict JSON with one retry on parse failure. · story:— · depends-on:T4,T7 · parallel-group:adapters
 
 ### 🚀 Production wire
 
