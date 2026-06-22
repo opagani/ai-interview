@@ -48,7 +48,7 @@
 
 ### 🖥️ UI
 
-- [ ] **T19** — Vanilla chat UI in `src/ui/chat.html` (and a tiny inline JS): renders the conversation, posts to `/api/sessions/:token/turns`, calls `/complete` when `isComplete`, then shows the per-topic scores. Served by `GET /interview/:token` (already wired in T12); also branches to a results-only view when the session is already `complete`. · story:STORY-2,3,4,5 · depends-on:T18
+- [x] **T19** — Vanilla chat UI in `src/ui/chat.html` (and a tiny inline JS): renders the conversation, posts to `/api/sessions/:token/turns`, calls `/complete` when `isComplete`, then shows the per-topic scores. Served by `GET /interview/:token` (already wired in T12); also branches to a results-only view when the session is already `complete`. · story:STORY-2,3,4,5 · depends-on:T18
 
 ## First shippable slice
 
