@@ -1,9 +1,5 @@
 // Deployed entry point — pure routing + HTTP shaping. No business logic, no DB.
 // createApp(deps) returns a Web-standard fetch handler (Workers + Bun).
-//
-// STUB: every route returns 501 until /build-loop wires the service (T8/T9).
-// Specs drive THIS handler with a fake repo injected, so they are red now and
-// turn green when the routing + service are implemented.
 
 import type { LinkRepository } from "./links/repository";
 import type { SlugGenerator } from "./links/service";
@@ -81,7 +77,7 @@ export function createApp(deps: AppDeps): FetchApp {
         });
       }
 
-      return json({ error: "not_implemented" }, 501);
+      return json({ error: "not_found" }, 404);
     },
   };
 }
