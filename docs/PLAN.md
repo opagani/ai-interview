@@ -11,7 +11,7 @@
 
 ## Tasks
 
-- [ ] **T1** — Scaffold Bun project: `package.json`, `tsconfig` (strict),
+- [x] **T1** — Scaffold Bun project: `package.json`, `tsconfig` (strict),
   `bunfig.toml`. · story:— · depends-on:— · parallel-group:—
 - [ ] **T2** — `Result<T,E>` type + `ok`/`err` helpers in `src/shared/result.ts`.
   · story:— · depends-on:T1 · parallel-group:foundation
