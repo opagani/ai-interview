@@ -5,6 +5,7 @@ import type { LinkRepository } from "./links/repository";
 import type { SlugGenerator } from "./links/service";
 import { createLink, getStats, resolveSlug } from "./links/service";
 import { QUESTIONS, findQuestion, findAnswer } from "./quiz";
+import { renderFrontend } from "./frontend";
 
 export interface AppDeps {
   readonly repo: LinkRepository;
@@ -29,6 +30,13 @@ export function createApp(deps: AppDeps): FetchApp {
     async fetch(request: Request): Promise<Response> {
       const url = new URL(request.url);
       const { pathname } = url;
+
+      // GET / — frontend
+      if (pathname === "/" && request.method === "GET") {
+        return new Response(renderFrontend(deps.baseUrl), {
+          headers: { "content-type": "text/html;charset=UTF-8" },
+        });
+      }
 
       // GET /api/quiz — TypeScript interview questions from this codebase
       if (pathname === "/api/quiz" && request.method === "GET") {
