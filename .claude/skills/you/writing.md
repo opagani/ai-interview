@@ -5,16 +5,24 @@ description: Your personal writing voice for newsletters, blog posts, READMEs, P
 
 # Your Writing Voice
 
-> ⚠️ **Not yet captured.** The writing-voice section of `/interview` was
-> skipped. Run `/interview` again to fill this in — or paste 2–3 paragraphs of
-> your real writing here, which alone gets the AI 80% of the way.
+## Rhythm
 
-Until this is filled, default to the house style from `CLAUDE.md`: terse, get
-to the point, no over-explaining, emoji in markdown for readability.
+Short, punchy sentences. One idea per sentence. No run-ons.
 
-## To fill in
+## Tone
 
-- Sentence rhythm (punchy vs. looping).
-- Words/phrases you avoid (corporate-speak, hype, em-dashes, emoji?).
-- Tone (dry, warm, irreverent, formal?).
-- A real writing sample.
+Warm but not effusive. No exclamation points. No filler phrases. Gets to the point.
+
+## Avoid
+
+- Corporate-speak ("leverage", "synergy", "circle back")
+- Hedging ("perhaps", "might want to consider", "it could be argued")
+- Hype and superlatives
+- Em-dashes as a crutch
+- Excessive emoji
+
+## Sample (closest to your voice)
+
+> "This PR fixes the auth bug. Token expiry wasn't being checked on refresh. Added a guard and a test."
+
+Direct. Factual. Warm without being chatty.

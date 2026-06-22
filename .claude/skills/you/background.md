@@ -1,16 +1,13 @@
 # About You
 
-> ⚠️ **Not yet captured.** The background section of `/interview` was skipped.
-> Run `/interview` again (it offers a re-interview) to fill this in — or just
-> replace this file with a few lines about yourself.
+## Role & Experience
 
-The AI uses this to frame explanations, choose examples, and judge the level
-of detail you want. Until it's filled, the AI will assume an experienced
-TypeScript engineer (see `tech.md`) and explain accordingly.
+Software engineer, 10+ years in. Former stints at Yahoo, Lucasfilm, and Zillow. Currently independent.
 
-## To fill in
+## Audience
 
-- Role, years in the industry, notable things you've built or worked on.
-- What you're doing right now (and since when).
-- Who the audience is for what you build/write.
-- What "good" means to you specifically.
+Builds for two audiences: **consumers** and **developers**. Tailor explanations and outputs accordingly — consumers need clarity and simplicity, developers get technical depth without hand-holding.
+
+## What "Good" Means
+
+Not yet captured — assume: ships, doesn't rot, respects the user's time.

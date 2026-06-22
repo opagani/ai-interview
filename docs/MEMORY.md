@@ -61,4 +61,58 @@ Distinct from the `~/.claude` memory system.
 - **How to apply:** /build-loop turns these green task-by-task per PLAN.md
   (T1→foundation→services→T8→T9 wire is the first green slice).
 
+### [2026-06-21] /explore — real project defined: TechScreen AI interviewer
+- **What:** AI chatbot that interviews job candidates on TypeScript, React, Python, and AI; scores per topic; candidate self-serves via link.
+- **Why:** Replaces slow first-round phone screens for independent engineers hiring technical roles.
+- **Scope cut:** No dashboard, no auth, no custom questions at MVP — just the bot and a score.
+- **Previous DEMO (ShortLink) is superseded.** All prior demo artifacts are throwaway.
+
+### [2026-06-21] /design — no web framework, hand-routed Web-standard fetch
+- **Why:** Few routes, matches tech.md (Web APIs, light frameworks), runs Workers + Bun unchanged.
+- **Rejected:** Hono — needless dep at this size.
+
+### [2026-06-21] /design — SessionRepository + LlmClient ports
+- **Why:** Specs drive the real entry point with in-memory + scripted fakes; D1↔fake and Anthropic↔fake swaps are one-file changes.
+- **Rejected:** Calling Drizzle / Anthropic SDK directly from handlers — couples every test to a real DB and a paid API call.
+
+### [2026-06-21] /design — structured question bank + AI follow-up (not fully AI-driven)
+- **Why:** Predictable topic coverage, deterministic length, consistent scoring across candidates.
+- **Rejected:** Fully LLM-generated questions — wider variance, harder to compare candidates.
+
+### [2026-06-21] /design — separate AI judge pass over full transcript
+- **Why:** Judge sees the whole conversation; interviewer prompt stays focused on questioning; cleaner separation.
+- **Rejected:** Inline scoring as the interviewer goes — mixes concerns, heavier per-turn prompts.
+
+### [2026-06-21] /design — Anthropic Claude (Sonnet 4.6) over Workers AI
+- **Why:** Quality of judging open-ended technical answers materially affects whether scores are trustworthy.
+- **Rejected:** Workers AI (Llama) — free but lower technical depth. Revisit if cost bites.
+
+### [2026-06-21] /design — static question bank as a TS module, not a DB table
+- **Why:** Questions are code; review in git, edit + redeploy. Avoids an admin CRUD surface.
+- **Rejected:** `questions` table — premature at MVP.
+
+### [2026-06-21] /design — turns table over a JSON blob on sessions
+- **Why:** Conversation IS the data; needed for LLM replay and judge input; insert-ordered, queryable.
+- **Rejected:** `sessions.transcript_json` — opaque, hard to query, lossy.
+
+### [2026-06-21] /design — one-time-use token per candidate session
+- **Why:** Prevents score-shopping; ties scores to a person; matches "one attempt per link" decision.
+- **Rejected:** Shared public link — lower trust, no per-candidate isolation.
+
+### [2026-06-21] /design — vanilla HTML/JS chat UI, no build step
+- **Why:** UI is a chat box and results panel; matches tech.md (keep frontend light, no build where avoidable).
+- **Rejected:** React/Vite — build pipeline for ~200 lines of UI.
+
+### [2026-06-21] /plan — STORIES.md/PLAN.md regenerated for TechScreen
+- **Why:** Prior STORIES.md / PLAN.md were ShortLink DEMO artifacts (all `- [x]`); MEMORY notes the DEMO is superseded.
+- **What:** 5 stories (one per SPEC feature), 19 tasks in PLAN.md; specs generated via bdd-specs and verified RED (5/5 fail on missing modules).
+
+### [2026-06-21] /plan — createApp deps include `questions`, `adminToken`, `baseUrl`
+- **Why:** Specs need a tiny 4-question test bank to keep the turn loop tractable, a known admin secret to test auth, and a known baseUrl to assert the candidate URL. Promoting these to deps keeps the app pure.
+- **How to apply:** T12 implements `createApp({ repo, llm, questions, adminToken, baseUrl })`. `src/server.ts` (T18) wires the real values from `env`.
+
+### [2026-06-21] /plan — UI deferred to T19, last task
+- **Why:** Building UI before the JSON API is green invents API shapes the backend then has to honour. T12 already wires `GET /interview/:token` as a route; T19 just supplies the HTML asset.
+- **Rejected:** UI parallel with services — risks API drift and rework.
+
 <!-- /explore, /design, /plan, /build-loop, /document each append here -->

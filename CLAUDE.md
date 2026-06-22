@@ -1,6 +1,6 @@
 # Project
 
-> 📌 TODO: one-line project summary. Defined by `/explore` → `docs/PROJECT.md`.
+> 📌 TechScreen — AI chatbot that interviews job candidates on TypeScript, React, Python, and AI, then scores them per topic.
 
 ## 🛠️ Stack
 

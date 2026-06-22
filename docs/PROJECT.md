@@ -1,60 +1,50 @@
 <!-- Owner: /explore — do not edit from other phase commands. -->
 
-# 📖 Project — ShortLink (DEMO)
-
-> 🧪 **This is a cohort DEMO**, chosen by the assistant because no real idea
-> was supplied — a URL shortener was picked to exercise the full pipeline on
-> the user's stack (TS/Bun, SQLite→D1 Workers). When you have a real project,
-> re-run `/explore` and it overwrites this file.
+# 📖 Project — TechScreen
 
 ## ❓ Problem
 
-People share long, ugly URLs (tracking params, deep paths) in places where
-space and trust matter — chat, print, slides. Today they paste the raw URL or
-reach for a third-party shortener that owns their links and data. ShortLink is
-a tiny self-hosted shortener: turn a long URL into a short slug, redirect on
-visit, and count the clicks.
+Hiring engineers is slow. Phone screens waste time on both sides when the candidate's actual depth in TypeScript, React, Python, and AI is unknown going in. TechScreen replaces the first technical screen with an AI chatbot interview — candidates take it on their own time via a link, it adapts to their answers, and returns a score.
 
 ## 👥 Who it's for
 
-- **For:** a developer who wants their *own* short links on their *own* domain,
-  with click counts, deployed free on the edge.
-- **Not for:** teams needing branded campaigns, A/B routing, QR suites, or
-  link-level auth/expiry. That's a product; this is a utility.
+- **For:** an independent engineer or small team hiring for roles requiring TypeScript, React, Python, and/or AI knowledge.
+- **Not for:** large HR departments, non-technical roles, or interviews needing human judgment mid-session.
 
 ## 🎯 Goals
 
-1. Create a short link from a long URL via a single API call.
-2. Redirect a visitor from `/{slug}` to the original URL.
-3. Report how many times a link was visited.
+1. Send a candidate a link — they take the interview unassisted.
+2. The AI conducts a conversational, adaptive interview across the four topics.
+3. The candidate receives a score/grade per topic at the end.
 
 ## ✅ Success (observable)
 
-- `POST /links` with a valid URL returns a slug and a working short URL.
-- `GET /{slug}` 302-redirects to the original URL.
-- `GET /api/links/{slug}/stats` returns an accurate click count.
-- Deploys to Cloudflare Workers free tier with D1 as the only datastore.
+- A candidate opens a link, completes a full interview without any human involvement.
+- The system scores each topic area and presents results at session end.
+- Interview quality is good enough to surface real knowledge gaps (not gameable by keyword-matching).
 
 ## 🚧 Scope
 
-**In:** create link, redirect + click capture, stats read. REST/JSON API.
+**In:** interview bot, adaptive questioning across TypeScript / React / Python / AI, per-topic scoring, self-serve candidate link.
 
-**Out:** custom slugs, auth/accounts, link editing/deletion, expiry, rate
-limiting, a UI, analytics beyond a raw count. (All parked — YAGNI for the demo.)
+**Out:** recruiter dashboard, candidate management, custom question sets, auth/accounts, scheduling, video/audio, cheating detection, team collaboration.
 
 ## 🧱 Constraints
 
-- TypeScript on Bun (dev/test); ships as Workers-compatible code (Web APIs).
+- TypeScript on Bun (dev/test); ships Workers-compatible code (Web APIs).
 - SQLite + Drizzle locally → Cloudflare D1 in prod. Free-tier-first.
 - REST + Result/typed errors. Strict TS. Tests-first.
+- AI usage costs must stay negligible at MVP scale (few candidates/day).
 
 ## ⚠️ Riskiest unknowns
 
-- Slug collision strategy under concurrency (generate-and-retry vs. counter).
-- Whether per-visit click writes stay within D1 free-tier write limits.
+- Can a single AI conversation session reliably assess depth vs. surface knowledge across 4 topics without becoming too long?
+- How do we score open-ended answers consistently? (rubric design is hard)
 
 ## 🔍 Open questions
 
-- Slug length / alphabet? (Assumed: 7-char base62, regenerate on collision.)
-- Count clicks in a `clicks` table, or a counter column on `links`? (Assumed:
-  separate `clicks` table — keeps the door open for per-click metadata later.)
+- TODO: Who sees the score — candidate only, interviewer only, or both?
+- TODO: Target interview duration? (sets question count and depth per topic)
+- TODO: Scoring schema — 1–5 per topic? overall %? hire/no-hire signal?
+- TODO: How is the candidate link generated and distributed — manual, API, or email integration?
+- TODO: What model powers the interview? (Claude claude-opus-4-8 implied by stack but not decided)
