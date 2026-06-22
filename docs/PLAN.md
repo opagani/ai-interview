@@ -20,11 +20,11 @@
 - [x] **T4** — Drizzle schema (`links`, `clicks`) in `src/links/schema.ts`
   (STRICT, unique slug, FK cascade). · story:— · depends-on:T1 ·
   parallel-group:foundation
-- [ ] **T5** — `createLink` service (validate URL, gen slug, retry on collision)
+- [x] **T5** — `createLink` service (validate URL, gen slug, retry on collision)
   returning `Result`. · story:STORY-1 · depends-on:T2,T3 · parallel-group:services
-- [ ] **T6** — `resolveSlug` service (find or `not_found`, record click).
+- [x] **T6** — `resolveSlug` service (find or `not_found`, record click).
   · story:STORY-2 · depends-on:T2,T3 · parallel-group:services
-- [ ] **T7** — `getStats` service (find or `not_found`, count clicks).
+- [x] **T7** — `getStats` service (find or `not_found`, count clicks).
   · story:STORY-3 · depends-on:T2,T3 · parallel-group:services
 - [ ] **T8** — `createApp(deps)` router + HTTP shaping (JSON, status codes,
   Location header) in `src/app.ts`. · story:STORY-1,2,3 · depends-on:T5,T6,T7
