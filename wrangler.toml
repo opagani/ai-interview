@@ -1,20 +1,21 @@
-# Cloudflare Workers config for the DEMO ShortLink.
+# Cloudflare Workers config for TechScreen.
 # Run:    bunx wrangler dev          (local, uses a local D1 sqlite file)
 # Deploy: bunx wrangler deploy       (after `wrangler login`)
 #
 # Before first run, create the D1 database and paste its id below:
-#   bunx wrangler d1 create shortlink
+#   bunx wrangler d1 create techscreen
 #   -> copy database_id into [[d1_databases]] below
 
-name = "shortlink-demo"
+name = "techscreen"
 main = "src/server.ts"
 compatibility_date = "2025-07-18"
 
 [vars]
 BASE_URL = "http://localhost:8787"
+ADMIN_TOKEN = "dev-admin-secret"   # dev only placeholder — override in prod secrets
 
 [[d1_databases]]
 binding = "DB"                 # exposed to the Worker as env.DB
-database_name = "shortlink"
-database_id = "4f0b13da-0f83-4fe1-9667-900584c3f332"     # from `wrangler d1 create shortlink`
+database_name = "techscreen"
+database_id = "TODO"           # from `wrangler d1 create techscreen`
 migrations_dir = "drizzle"     # drizzle-kit writes migrations here

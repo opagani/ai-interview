@@ -1,17 +1,17 @@
 {
-  "name": "shortlink-demo",
+  "name": "techscreen",
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "DEMO URL shortener — pipeline walkthrough (TS/Bun, SQLite→D1 Workers).",
+  "description": "AI-powered candidate interview tool",
   "scripts": {
     "test": "bun test",
     "dev": "wrangler dev",
     "dev:bun": "bun run src/server.ts",
     "deploy": "wrangler deploy",
     "db:generate": "drizzle-kit generate",
-    "db:migrate:local": "wrangler d1 migrations apply shortlink --local",
-    "db:migrate": "wrangler d1 migrations apply shortlink --remote"
+    "db:migrate:local": "wrangler d1 migrations apply techscreen --local",
+    "db:migrate": "wrangler d1 migrations apply techscreen --remote"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240000.0",
@@ -20,6 +20,7 @@
     "wrangler": "4"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.105.0",
     "drizzle-orm": "^0.36.0"
   }
 }
