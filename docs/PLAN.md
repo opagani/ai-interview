@@ -35,7 +35,7 @@
 - [x] **T12** — `createApp(deps)` router + HTTP shaping in `src/app.ts`: routes `POST /api/sessions`, `GET /interview/:token`, `POST /api/sessions/:token/turns`, `POST /api/sessions/:token/complete`, `GET /api/sessions/:token/results`. Status codes, JSON bodies, Authorization parsing, error → `{error}` shape. · story:STORY-1,2,3,4,5 · depends-on:T8,T9,T10,T11
 - [x] **T13** — In-memory fake repository in `src/sessions/repository.fake.ts` (test-only) implementing the port. · story:— · depends-on:T3
 - [x] **T14** — Scripted fake LLM client in `src/llm/client.fake.ts` (test-only) implementing the port with deterministic canned responses + a "throw next call" toggle. · story:— · depends-on:T4
-- [ ] **T15** — **wire:** drive all 5 features through `createApp(deps).fetch` with the in-memory repo + scripted fake LLM injected. Acceptance: every STORY-1..5 spec turns green by sending a real `Request` through the handler — no service-level shortcuts. · story:STORY-1,2,3,4,5 · depends-on:T12,T13,T14
+- [x] **T15** — **wire:** drive all 5 features through `createApp(deps).fetch` with the in-memory repo + scripted fake LLM injected. Acceptance: every STORY-1..5 spec turns green by sending a real `Request` through the handler — no service-level shortcuts. · story:STORY-1,2,3,4,5 · depends-on:T12,T13,T14
 
 ### 🔌 Adapters (parallel after wire — behind ports)
 
