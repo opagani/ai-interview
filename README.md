@@ -14,112 +14,98 @@ context stripped out and replaced with templates for you to fill in.
 
 ---
 
-## 🔗 ShortLink demo — running it for real
+## 🤖 TechScreen — deploying to production
 
-> This repo contains a DEMO URL shortener (`/links` shorten, `/{slug}` redirect,
-> `/api/links/{slug}/stats`) built as a walkthrough of the toolkit pipeline.
-> All 19 specs pass. Here's how to take it from green tests to a live Worker.
+> AI-powered candidate interviewer. Candidates self-serve via a unique link,
+> the AI interviews them across TypeScript / React / Python / AI, and scores
+> each topic 1–5. 58 specs pass. Here's how to go from green tests to a live Worker.
 
 ### Prerequisites
 
 - [Bun](https://bun.sh) installed (`bun --version`)
 - [Cloudflare account](https://dash.cloudflare.com) (free tier is enough)
 - `bunx wrangler login` done at least once
+- An Anthropic API key (the judge + interviewer run on `claude-sonnet-4-6`)
 
 ### 1 — Create the D1 database
 
 ```bash
-bunx wrangler d1 create shortlink
+bunx wrangler d1 create techscreen
 ```
 
-Copy the `database_id` it prints and paste it into `wrangler.toml`:
+Copy the `database_id` from the output and paste it into `wrangler.toml`:
 
 ```toml
 [[d1_databases]]
-database_id = "paste-id-here"   # ← replace REPLACE_ME
+database_id = "paste-id-here"
 ```
 
-### 2 — Generate and apply the migration
+### 2 — Apply migrations
 
 ```bash
-bun run db:generate          # schema.ts → drizzle/*.sql
+# Local (for wrangler dev)
+bun run db:migrate:local
+
+# Production
+bun run db:migrate
 ```
 
-> ⚠️ Open the generated `.sql` file and add `) STRICT;` to the end of each
-> `CREATE TABLE` statement before applying — drizzle-kit won't do this for you.
+### 3 — Set secrets
 
 ```bash
-bun run db:migrate:local     # apply to local D1 (for wrangler dev)
+# Anthropic API key — never goes in wrangler.toml
+bunx wrangler secret put ANTHROPIC_API_KEY
+
+# Admin token for POST /api/sessions (overrides the dev placeholder)
+bunx wrangler secret put ADMIN_TOKEN
 ```
 
-### 3 — Run locally
+Both prompts accept the value from stdin — nothing is written to disk.
+
+### 4 — Run locally
 
 ```bash
-bun run dev                  # wrangler dev → http://localhost:8787
+bun run dev   # wrangler dev → http://localhost:8787
 ```
 
 ```bash
-# Shorten a URL
-curl -i -X POST localhost:8787/links \
-  -H 'content-type: application/json' \
-  -d '{"url":"https://example.com"}'
-# → 201 { slug, shortUrl, targetUrl }
+# Create a candidate session (use the dev admin token from wrangler.toml)
+curl -X POST localhost:8787/api/sessions \
+  -H 'Authorization: Bearer dev-admin-secret' \
+  -H 'Content-Type: application/json' \
+  -d '{}'
+# → 201 { token, url }
 
-# Follow the redirect
-curl -i localhost:8787/<slug>
-# → 302 Location: https://example.com
+# Open the interview link in a browser
+open http://localhost:8787/interview/<token>
 
-# Check stats
-curl localhost:8787/api/links/<slug>/stats
-# → 200 { slug, targetUrl, clicks }
+# Or drive it via API
+curl -X POST localhost:8787/api/sessions/<token>/turns \
+  -H 'Content-Type: application/json' \
+  -d '{"answer": null}'
+# → 200 { assistant, isComplete, topic }
 ```
 
-### Quiz — four topics
-
-The demo includes 11 interview questions per topic (44 total). Quiz tab is the
-default landing page. Select a topic in the browser UI, or hit the API directly:
+### 5 — Deploy to Cloudflare
 
 ```bash
-# Topics: typescript | react | python | ai
-
-# Random question from a topic
-curl localhost:8787/api/quiz/typescript | jq .
-curl localhost:8787/api/quiz/react | jq .
-curl localhost:8787/api/quiz/python | jq .
-curl localhost:8787/api/quiz/ai | jq .
-
-# All questions for a topic
-curl "localhost:8787/api/quiz/react?all=true" | jq .
-
-# Reveal the answer for question 3 in python
-curl localhost:8787/api/quiz/python/3/answer | jq .
+bun run deploy   # bundles + deploys to Workers
 ```
 
-| Topic | Covers |
-|---|---|
-| TypeScript | discriminated unions, type guards, `readonly`, DI, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `#` private fields, `verbatimModuleSyntax` |
-| React | state vs props, hooks, virtual DOM, reconciliation, context, concurrent mode |
-| Python | lists vs tuples, generators, GIL, decorators, `*args`/`**kwargs`, asyncio vs threading vs multiprocessing |
-| AI | LLMs, prompting, RAG, embeddings, hallucination, tool use, transformers, agents |
-
-### 4 — Deploy to Cloudflare
+### 6 — Smoke test the live Worker
 
 ```bash
-bun run db:migrate           # apply migration to prod D1
-bun run deploy               # wrangler deploy
+curl -X POST https://techscreen.<your-subdomain>.workers.dev/api/sessions \
+  -H 'Authorization: Bearer <your-admin-token>' \
+  -H 'Content-Type: application/json' \
+  -d '{}'
+# → 201 { token, url }
 ```
 
-Set `BASE_URL` so the frontend calls the right API:
-
-1. Go to **https://dash.cloudflare.com**
-2. Workers & Pages → **shortlink-demo** → Settings → Variables
-3. Add variable: `BASE_URL` = `https://shortlink-demo.paganio.workers.dev`
-4. Click **Save and deploy**
-
-### Run tests (no D1 needed)
+### Run tests (no D1 or API key needed)
 
 ```bash
-bun test   # 19 pass / 0 fail — fake in-memory repo, no network required
+bun test   # 58 pass / 0 fail — fake repo + scripted LLM, no network required
 ```
 
 ---
