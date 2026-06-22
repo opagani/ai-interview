@@ -4,7 +4,7 @@
 import type { LinkRepository } from "./links/repository";
 import type { SlugGenerator } from "./links/service";
 import { createLink, getStats, resolveSlug } from "./links/service";
-import { QUESTIONS } from "./quiz";
+import { QUESTIONS, findQuestion, findAnswer } from "./quiz";
 
 export interface AppDeps {
   readonly repo: LinkRepository;
@@ -36,6 +36,16 @@ export function createApp(deps: AppDeps): FetchApp {
         if (all === "true") return json(QUESTIONS);
         const q = QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)];
         return json(q);
+      }
+
+      // GET /api/quiz/:id/answer
+      const answerMatch = /^\/api\/quiz\/(\d+)\/answer$/.exec(pathname);
+      if (answerMatch !== null && request.method === "GET") {
+        const id = parseInt(answerMatch[1] as string, 10);
+        const question = findQuestion(id);
+        if (question === undefined) return json({ error: "not_found" }, 404);
+        const answer = findAnswer(id);
+        return json({ ...question, ...answer });
       }
 
       // POST /links — shorten a URL
