@@ -16,12 +16,12 @@
 
 ### 🧱 Foundation (parallel — no shared state)
 
-- [ ] **T2** — `Result<T,E>` type + `ok`/`err` helpers in `src/shared/result.ts`. · story:— · depends-on:T1 · parallel-group:foundation
-- [ ] **T3** — Domain types + `SessionRepository` port in `src/sessions/repository.ts` (`Session`, `Turn`, `Score`, `SessionStatus`, repo interface). · story:— · depends-on:T1 · parallel-group:foundation
-- [ ] **T4** — `LlmClient` port in `src/llm/client.ts` with `chat(messages)` and `judge(transcript)` signatures + message/score types. · story:— · depends-on:T1 · parallel-group:foundation
-- [ ] **T5** — Drizzle SQLite schema in `src/sessions/schema.ts` (`sessions`, `turns`, `scores` with unique token, FK cascades, status enum). · story:— · depends-on:T1 · parallel-group:foundation
-- [ ] **T6** — Question bank module in `src/sessions/questions.ts` (~3–4 curated questions per topic across TypeScript / React / Python / AI). · story:— · depends-on:T1 · parallel-group:foundation
-- [ ] **T7** — Interviewer + judge prompts in `src/sessions/prompts.ts` (system prompt with rubric anchors; judge prompt returning strict JSON shape). · story:— · depends-on:T1 · parallel-group:foundation
+- [x] **T2** — `Result<T,E>` type + `ok`/`err` helpers in `src/shared/result.ts`. · story:— · depends-on:T1 · parallel-group:foundation
+- [x] **T3** — Domain types + `SessionRepository` port in `src/sessions/repository.ts` (`Session`, `Turn`, `Score`, `SessionStatus`, repo interface). · story:— · depends-on:T1 · parallel-group:foundation
+- [x] **T4** — `LlmClient` port in `src/llm/client.ts` with `chat(messages)` and `judge(transcript)` signatures + message/score types. · story:— · depends-on:T1 · parallel-group:foundation
+- [x] **T5** — Drizzle SQLite schema in `src/sessions/schema.ts` (`sessions`, `turns`, `scores` with unique token, FK cascades, status enum). · story:— · depends-on:T1 · parallel-group:foundation
+- [x] **T6** — Question bank module in `src/sessions/questions.ts` (~3–4 curated questions per topic across TypeScript / React / Python / AI). · story:— · depends-on:T1 · parallel-group:foundation
+- [x] **T7** — Interviewer + judge prompts in `src/sessions/prompts.ts` (system prompt with rubric anchors; judge prompt returning strict JSON shape). · story:— · depends-on:T1 · parallel-group:foundation
 
 ### ⚙️ Services (parallel — share types only)
 
