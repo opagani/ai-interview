@@ -44,7 +44,7 @@
 
 ### 🚀 Production wire
 
-- [ ] **T18** — **wire:** Workers `default.fetch` in `src/server.ts` builds `D1SessionRepository` + `AnthropicLlmClient` from `env` (ADMIN_TOKEN, ANTHROPIC_API_KEY, D1 binding) and delegates to `createApp`. Acceptance: a real request through `server.default.fetch` against a local D1 binding completes a session end-to-end against the real Anthropic API in `/verify`. · story:STORY-1,2,3,4,5 · depends-on:T15,T16,T17
+- [x] **T18** — **wire:** Workers `default.fetch` in `src/server.ts` builds `D1SessionRepository` + `AnthropicLlmClient` from `env` (ADMIN_TOKEN, ANTHROPIC_API_KEY, D1 binding) and delegates to `createApp`. Acceptance: a real request through `server.default.fetch` against a local D1 binding completes a session end-to-end against the real Anthropic API in `/verify`. · story:STORY-1,2,3,4,5 · depends-on:T15,T16,T17
 
 ### 🖥️ UI
 
