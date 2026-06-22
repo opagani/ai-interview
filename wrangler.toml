@@ -8,7 +8,7 @@
 
 name = "shortlink-demo"
 main = "src/server.ts"
-compatibility_date = "2026-06-01"
+compatibility_date = "2025-07-18"
 
 [vars]
 BASE_URL = "http://localhost:8787"
@@ -16,5 +16,5 @@ BASE_URL = "http://localhost:8787"
 [[d1_databases]]
 binding = "DB"                 # exposed to the Worker as env.DB
 database_name = "shortlink"
-database_id = "REPLACE_ME"     # from `wrangler d1 create shortlink`
+database_id = "4f0b13da-0f83-4fe1-9667-900584c3f332"     # from `wrangler d1 create shortlink`
 migrations_dir = "drizzle"     # drizzle-kit writes migrations here
