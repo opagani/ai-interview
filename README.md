@@ -78,37 +78,54 @@ bunx wrangler secret put ADMIN_TOKEN
 
 Both prompts accept the value from stdin — nothing is written to disk.
 
-### 4 — Run locally
+### 4 — Set up local secrets
+
+Create a `.dev.vars` file in the project root (already gitignored). No quotes on values:
+
+```bash
+# .dev.vars
+ANTHROPIC_API_KEY=sk-ant-...
+ADMIN_TOKEN=your-token-here
+```
+
+The `ADMIN_TOKEN` value must match `ADMIN_TOKEN` in `wrangler.toml`. `wrangler dev` picks up `.dev.vars` automatically.
+
+> ⚠️ **Add credits first** — go to [console.anthropic.com](https://console.anthropic.com) → Plans & Billing before running locally or the first turn will fail.
+
+### 5 — Run locally
 
 ```bash
 bun run dev   # wrangler dev → http://localhost:8787
 ```
 
 ```bash
-# Create a candidate session (use the dev admin token from wrangler.toml)
+# Create a candidate session — use the ADMIN_TOKEN from wrangler.toml
 curl -X POST localhost:8787/api/sessions \
-  -H 'Authorization: Bearer dev-admin-secret' \
-  -H 'Content-Type: application/json' \
-  -d '{}'
+  -H 'Authorization: Bearer <your-admin-token>' \
+  -H 'Content-Type: application/json'
 # → 201 { token, url }
 
 # Open the interview link in a browser
 open http://localhost:8787/interview/<token>
-
-# Or drive it via API
-curl -X POST localhost:8787/api/sessions/<token>/turns \
-  -H 'Content-Type: application/json' \
-  -d '{"answer": null}'
-# → 200 { assistant, isComplete, topic }
 ```
 
-### 5 — Deploy to Cloudflare
+### Key commands
+
+| Command | What it does |
+|---|---|
+| `bun run dev` | Start local Worker on http://localhost:8787 |
+| `bun test` | Run all specs (no network/DB needed) |
+| `bun run db:migrate:local` | Apply schema migrations to local D1 |
+| `bun run db:migrate` | Apply schema migrations to production D1 |
+| `bun run deploy` | Deploy to Cloudflare Workers |
+
+### 6 — Deploy to Cloudflare
 
 ```bash
 bun run deploy   # bundles + deploys to Workers
 ```
 
-### 6 — Smoke test the live Worker
+### 7 — Smoke test the live Worker
 
 ```bash
 curl -X POST https://techscreen.<your-subdomain>.workers.dev/api/sessions \

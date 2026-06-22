@@ -76,18 +76,27 @@ export async function submitAnswer(
     .filter((t) => t.role === "user" || t.role === "assistant")
     .map((t) => ({ role: t.role as "user" | "assistant", content: t.content }));
 
+  // Ensure conversation ends with a user message. If history is empty or ends
+  // with an assistant turn (e.g. page reload after the opening turn), inject a
+  // synthetic prompt so the API call is valid.
+  const lastRole = history.at(-1)?.role;
+  const conversation: ChatMessage[] =
+    history.length === 0 || lastRole === "assistant"
+      ? [...history, { role: "user", content: "Please continue the interview." }]
+      : history;
+
   const messages: ChatMessage[] = [
     { role: "system", content: buildInterviewerSystemPrompt(currentQuestion) },
-    ...history,
+    ...conversation,
   ];
 
   // 7. Call LLM — rollback user turn on failure.
   let assistantText: string;
   try {
     assistantText = await llm.chat(messages);
-  } catch {
+  } catch (e) {
+    console.error("LLM chat failed:", e);
     if (appendedUserTurnId !== null) {
-      // deleteTurnsAfter removes everything with id > afterId, so pass id - 1.
       await repo.deleteTurnsAfter(session.id, appendedUserTurnId - 1);
     }
     return err("llm_failed");

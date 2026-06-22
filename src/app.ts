@@ -152,8 +152,8 @@ function chatPage(token: string): string {
             setInputEnabled(true);
             return;
           }
-          if (data.message) {
-            addMessage('assistant', data.message);
+          if (data.assistant) {
+            addMessage('assistant', data.assistant);
           }
           if (data.isComplete) {
             await finishInterview();
@@ -342,5 +342,14 @@ export function createApp(deps: AppDeps): { fetch: (request: Request) => Promise
     return jsonResponse({ error: "not_found" }, 404);
   }
 
-  return { fetch: handleFetch };
+  async function handleFetchSafe(request: Request): Promise<Response> {
+    try {
+      return await handleFetch(request);
+    } catch (e) {
+      console.error("Unhandled error:", e);
+      return jsonResponse({ error: String(e) }, 500);
+    }
+  }
+
+  return { fetch: handleFetchSafe };
 }

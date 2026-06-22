@@ -9,13 +9,14 @@
 name = "techscreen"
 main = "src/server.ts"
 compatibility_date = "2025-07-18"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 BASE_URL = "http://localhost:8787"
-ADMIN_TOKEN = "dev-admin-secret"   # dev only placeholder — override in prod secrets
+ADMIN_TOKEN = "ea4d60ec7c244cc48ad93b9a2869bdf1"   # dev only placeholder — override in prod secrets
 
 [[d1_databases]]
 binding = "DB"                 # exposed to the Worker as env.DB
 database_name = "techscreen"
-database_id = "TODO"           # from `wrangler d1 create techscreen`
+database_id = "7a846ad4-d6ca-49a4-b063-5214535de38d"           # from `wrangler d1 create techscreen`
 migrations_dir = "drizzle"     # drizzle-kit writes migrations here
