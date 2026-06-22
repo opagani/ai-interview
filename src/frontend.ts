@@ -275,12 +275,12 @@ export function renderFrontend(baseUrl: string): string {
   </header>
 
   <nav>
-    <button class="active" onclick="showTab('shortlink')">🔗 ShortLink</button>
-    <button onclick="showTab('quiz')">🧠 TS Quiz</button>
+    <button class="active" onclick="showTab('quiz')">🧠 Quiz</button>
+    <button onclick="showTab('shortlink')">🔗 ShortLink</button>
   </nav>
 
   <!-- SHORTLINK TAB -->
-  <div id="tab-shortlink" class="tab active">
+  <div id="tab-shortlink" class="tab">
     <div class="card">
       <h2>Shorten a URL</h2>
       <div class="field">
@@ -325,7 +325,7 @@ export function renderFrontend(baseUrl: string): string {
   </div>
 
   <!-- QUIZ TAB -->
-  <div id="tab-quiz" class="tab">
+  <div id="tab-quiz" class="tab active">
     <div class="card">
       <div class="topic-nav">
         <button class="active" onclick="selectTopic('typescript',this)">TypeScript</button>
@@ -374,8 +374,10 @@ export function renderFrontend(baseUrl: string): string {
     document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     event.target.classList.add('active');
-    if (name === 'quiz' && !currentQ) loadQuestion();
   }
+
+  // Load first question on page load (quiz is the default tab)
+  loadQuestion();
 
   // --- SHORTLINK ---
   async function shorten() {

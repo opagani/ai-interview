@@ -74,25 +74,33 @@ curl localhost:8787/api/links/<slug>/stats
 # → 200 { slug, targetUrl, clicks }
 ```
 
-### TypeScript quiz
+### Quiz — four topics
 
-The demo includes 11 TypeScript interview questions drawn from the actual
-codebase — easy through hard, each referencing a real file.
+The demo includes 11 interview questions per topic (44 total). Quiz tab is the
+default landing page. Select a topic in the browser UI, or hit the API directly:
 
 ```bash
-# Random question
-curl localhost:8787/api/quiz | jq .
+# Topics: typescript | react | python | ai
 
-# All questions
-curl "localhost:8787/api/quiz?all=true" | jq .
+# Random question from a topic
+curl localhost:8787/api/quiz/typescript | jq .
+curl localhost:8787/api/quiz/react | jq .
+curl localhost:8787/api/quiz/python | jq .
+curl localhost:8787/api/quiz/ai | jq .
 
-# Reveal the answer for question 1
-curl localhost:8787/api/quiz/1/answer | jq .
+# All questions for a topic
+curl "localhost:8787/api/quiz/react?all=true" | jq .
+
+# Reveal the answer for question 3 in python
+curl localhost:8787/api/quiz/python/3/answer | jq .
 ```
 
-Questions cover: discriminated unions, type guards, `readonly`, dependency
-injection, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`,
-`Record<string, unknown>` vs `any`, `#` private fields, `verbatimModuleSyntax`.
+| Topic | Covers |
+|---|---|
+| TypeScript | discriminated unions, type guards, `readonly`, DI, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`, `#` private fields, `verbatimModuleSyntax` |
+| React | state vs props, hooks, virtual DOM, reconciliation, context, concurrent mode |
+| Python | lists vs tuples, generators, GIL, decorators, `*args`/`**kwargs`, asyncio vs threading vs multiprocessing |
+| AI | LLMs, prompting, RAG, embeddings, hallucination, tool use, transformers, agents |
 
 ### 4 — Deploy to Cloudflare
 
