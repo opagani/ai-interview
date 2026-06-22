@@ -101,8 +101,12 @@ bun run db:migrate           # apply migration to prod D1
 bun run deploy               # wrangler deploy
 ```
 
-Set `BASE_URL` in the Cloudflare dashboard (Workers → Settings → Variables)
-to `https://shortlink-demo.paganio.workers.dev`.
+Set `BASE_URL` so the frontend calls the right API:
+
+1. Go to **https://dash.cloudflare.com**
+2. Workers & Pages → **shortlink-demo** → Settings → Variables
+3. Add variable: `BASE_URL` = `https://shortlink-demo.paganio.workers.dev`
+4. Click **Save and deploy**
 
 ### Run tests (no D1 needed)
 
