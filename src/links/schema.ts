@@ -20,7 +20,7 @@ export const links = sqliteTable(
       .notNull()
       .$defaultFn(() => new Date()),
   },
-  (t) => [uniqueIndex("ux_links_slug").on(t.slug)],
+  (t) => ({ slugIdx: uniqueIndex("ux_links_slug").on(t.slug) }),
 );
 
 export const clicks = sqliteTable(
@@ -35,7 +35,7 @@ export const clicks = sqliteTable(
       .notNull()
       .$defaultFn(() => new Date()),
   },
-  (t) => [index("ix_clicks_link_id").on(t.linkId)],
+  (t) => ({ linkIdIdx: index("ix_clicks_link_id").on(t.linkId) }),
 );
 
 // Belt-and-suspenders so an unused import never trips a linter in this stub.
