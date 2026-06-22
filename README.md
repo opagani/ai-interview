@@ -102,7 +102,7 @@ bun run deploy               # wrangler deploy
 ```
 
 Set `BASE_URL` in the Cloudflare dashboard (Workers → Settings → Variables)
-to your `workers.dev` subdomain, e.g. `https://shortlink-demo.yourname.workers.dev`.
+to `https://shortlink-demo.paganio.workers.dev`.
 
 ### Run tests (no D1 needed)
 
