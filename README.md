@@ -6,7 +6,7 @@ a one-line idea to committed, reviewed code through a series of slash
 commands — each owning one document, each re-runnable, none stepping on the
 others.
 
-This is the same toolkit I (Rob Conery) use day to day, with my personal
+This is the same toolkit I (Oscar Pagani) use day to day, with my personal
 context stripped out and replaced with templates for you to fill in.
 
 > 🎥 **Companion video series:** this template is what you'll build alongside
