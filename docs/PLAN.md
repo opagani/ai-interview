@@ -33,7 +33,7 @@
   Acceptance: a real `Request` through `createApp(deps).fetch` produces the
   spec's side effect (201 + persisted link / 302 + recorded click / 200 +
   count). · story:STORY-1,2,3 · depends-on:T8
-- [ ] **T10** — `D1LinkRepository` implementing the port over Drizzle/D1.
+- [x] **T10** — `D1LinkRepository` implementing the port over Drizzle/D1.
   · story:— · depends-on:T3,T4 · parallel-group:adapters
 - [ ] **T11** — **wire:** Workers `default.fetch` in `src/server.ts` builds
   `D1LinkRepository` from `env` and delegates to `createApp`. Acceptance: a
