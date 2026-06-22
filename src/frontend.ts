@@ -80,6 +80,26 @@ export function renderFrontend(baseUrl: string): string {
     }
     nav button:hover:not(.active) { background: var(--surface2); color: var(--text); }
 
+    .topic-nav {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .topic-nav button {
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface2);
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .topic-nav button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .topic-nav button:hover:not(.active) { color: var(--text); border-color: var(--accent); }
+
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -307,12 +327,12 @@ export function renderFrontend(baseUrl: string): string {
   <!-- QUIZ TAB -->
   <div id="tab-quiz" class="tab">
     <div class="card">
-      <nav style="margin-bottom:1.25rem">
+      <div class="topic-nav">
         <button class="active" onclick="selectTopic('typescript',this)">TypeScript</button>
         <button onclick="selectTopic('react',this)">React</button>
         <button onclick="selectTopic('python',this)">Python</button>
         <button onclick="selectTopic('ai',this)">AI</button>
-      </nav>
+      </div>
 
       <div class="progress">
         <span id="q-counter">Question — of 11</span>
@@ -412,7 +432,7 @@ export function renderFrontend(baseUrl: string): string {
   function selectTopic(topic, btn) {
     currentTopic = topic;
     usedIds = [];
-    btn.closest('nav').querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.closest('.topic-nav').querySelectorAll('button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     loadQuestion();
   }
