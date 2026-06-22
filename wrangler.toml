@@ -12,8 +12,8 @@ compatibility_date = "2025-07-18"
 compatibility_flags = ["nodejs_compat"]
 
 [vars]
-BASE_URL = "http://localhost:8787"
-ADMIN_TOKEN = "ea4d60ec7c244cc48ad93b9a2869bdf1"   # dev only placeholder — override in prod secrets
+BASE_URL = "https://techscreen.paganio.workers.dev"
+# ADMIN_TOKEN is set via wrangler secret put in production; use .dev.vars locally
 
 [[d1_databases]]
 binding = "DB"                 # exposed to the Worker as env.DB

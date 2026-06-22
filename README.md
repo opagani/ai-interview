@@ -25,7 +25,9 @@ context stripped out and replaced with templates for you to fill in.
 - [Bun](https://bun.sh) installed (`bun --version`)
 - [Cloudflare account](https://dash.cloudflare.com) (free tier is enough)
 - `bunx wrangler login` done at least once
-- An Anthropic API key (the judge + interviewer run on `claude-sonnet-4-6`)
+- An Anthropic API key with credits (judge + interviewer run on `claude-sonnet-4-6`)
+  - Get one at [console.anthropic.com](https://console.anthropic.com) → API Keys
+  - Add credits at Plans & Billing — the API won't work without them
 
 ### 1 — Create the D1 database
 
@@ -40,100 +42,86 @@ Copy the `database_id` from the output and paste it into `wrangler.toml`:
 database_id = "paste-id-here"
 ```
 
-### 2 — Apply migrations
+### 2 — Set up local secrets
+
+Create `.dev.vars` in the project root (already gitignored). No quotes on values:
+
+```
+ANTHROPIC_API_KEY=sk-ant-...
+ADMIN_TOKEN=your-token-here
+```
+
+Use the same `ADMIN_TOKEN` value as in `wrangler.toml`. `wrangler dev` picks up `.dev.vars` automatically.
+
+### 3 — Apply migrations
 
 ```bash
-# Local (for wrangler dev)
+# Local
 bun run db:migrate:local
 
 # Production
 bun run db:migrate
 ```
 
-### 3 — Get your Anthropic API key
-
-1. Go to **[console.anthropic.com](https://console.anthropic.com)**
-2. Sign in (or create a free account)
-3. Click **API Keys** in the left sidebar
-4. Click **Create Key**, give it a name, copy it — starts with `sk-ant-...`
-
-**For local dev** — create a `.dev.vars` file in the project root (already gitignored):
+### 4 — Run locally
 
 ```bash
-# .dev.vars  — never commit this file
-ANTHROPIC_API_KEY=sk-ant-...
-```
-
-`wrangler dev` picks it up automatically. No flags needed.
-
-**For production** — upload as a Wrangler secret:
-
-```bash
-bunx wrangler secret put ANTHROPIC_API_KEY
-# paste your key at the prompt
-
-# Also set your admin token (overrides the dev placeholder in wrangler.toml)
-bunx wrangler secret put ADMIN_TOKEN
-```
-
-Both prompts accept the value from stdin — nothing is written to disk.
-
-### 4 — Set up local secrets
-
-Create a `.dev.vars` file in the project root (already gitignored). No quotes on values:
-
-```bash
-# .dev.vars
-ANTHROPIC_API_KEY=sk-ant-...
-ADMIN_TOKEN=your-token-here
-```
-
-The `ADMIN_TOKEN` value must match `ADMIN_TOKEN` in `wrangler.toml`. `wrangler dev` picks up `.dev.vars` automatically.
-
-> ⚠️ **Add credits first** — go to [console.anthropic.com](https://console.anthropic.com) → Plans & Billing before running locally or the first turn will fail.
-
-### 5 — Run locally
-
-```bash
-bun run dev   # wrangler dev → http://localhost:8787
+bun run dev   # → http://localhost:8787
 ```
 
 ```bash
-# Create a candidate session — use the ADMIN_TOKEN from wrangler.toml
-curl -X POST localhost:8787/api/sessions \
-  -H 'Authorization: Bearer <your-admin-token>' \
-  -H 'Content-Type: application/json'
+# Create a session
+curl -X POST http://localhost:8787/api/sessions \
+  -H "Authorization: Bearer <your-admin-token>" \
+  -H "Content-Type: application/json"
 # → 201 { token, url }
 
-# Open the interview link in a browser
-open http://localhost:8787/interview/<token>
+# Open the url from the response in a browser
 ```
+
+### 5 — Deploy to Cloudflare
+
+```bash
+# Set production secrets (do this before deploying)
+bunx wrangler secret put ANTHROPIC_API_KEY   # paste key at prompt
+bunx wrangler secret put ADMIN_TOKEN          # paste token at prompt
+
+# Verify secrets are set
+bunx wrangler secret list
+# should show: ANTHROPIC_API_KEY, ADMIN_TOKEN
+
+# Deploy
+bun run deploy
+```
+
+> ⚠️ `ADMIN_TOKEN` must NOT appear in `wrangler.toml [vars]` — secrets and vars cannot share a name. Set it only via `wrangler secret put`.
+
+### 6 — Create a production session
+
+```bash
+curl -X POST https://techscreen.<your-subdomain>.workers.dev/api/sessions \
+  -H "Authorization: Bearer <your-admin-token>" \
+  -H "Content-Type: application/json"
+# → 201 { token, url }
+
+# Open the url in a browser
+```
+
+Find your subdomain: `bunx wrangler whoami`
 
 ### Key commands
 
 | Command | What it does |
 |---|---|
 | `bun run dev` | Start local Worker on http://localhost:8787 |
-| `bun test` | Run all specs (no network/DB needed) |
-| `bun run db:migrate:local` | Apply schema migrations to local D1 |
-| `bun run db:migrate` | Apply schema migrations to production D1 |
-| `bun run deploy` | Deploy to Cloudflare Workers |
-
-### 6 — Deploy to Cloudflare
-
-```bash
-bun run deploy   # bundles + deploys to Workers
-```
-
-### 7 — Smoke test the live Worker
-
-```bash
-curl -X POST https://techscreen.<your-subdomain>.workers.dev/api/sessions \
-  -H 'Authorization: Bearer <your-admin-token>' \
-  -H 'Content-Type: application/json' \
-  -d '{}'
-# → 201 { token, url }
-```
+| `bun test` | Run all specs (no network or API key needed) |
+| `bun run db:migrate:local` | Apply schema to local D1 |
+| `bun run db:migrate` | Apply schema to production D1 |
+| `bun run deploy` | Bundle and deploy to Cloudflare Workers |
+| `bunx wrangler secret put <NAME>` | Set a production secret |
+| `bunx wrangler secret list` | List production secrets |
+| `bunx wrangler secret delete <NAME>` | Delete a production secret |
+| `bunx wrangler whoami` | Show your Cloudflare account + subdomain |
 
 ### Run tests (no D1 or API key needed)
 
