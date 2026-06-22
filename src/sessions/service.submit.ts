@@ -101,9 +101,11 @@ export async function submitAnswer(
     questionId: currentQuestion.id,
   });
 
-  // 9. Determine completion.
-  const nextIndex = session.currentQuestionIndex + 1;
-  const isComplete = nextIndex >= questions.length;
+  // 9. Determine completion — only advance after a real answer, not the opening null turn.
+  const nextIndex = hasAnswer
+    ? session.currentQuestionIndex + 1
+    : session.currentQuestionIndex;
+  const isComplete = hasAnswer && nextIndex >= questions.length;
 
   // 10 & 11. Advance state.
   if (isComplete) {
