@@ -14,6 +14,84 @@ context stripped out and replaced with templates for you to fill in.
 
 ---
 
+## 🔗 ShortLink demo — running it for real
+
+> This repo contains a DEMO URL shortener (`/links` shorten, `/{slug}` redirect,
+> `/api/links/{slug}/stats`) built as a walkthrough of the toolkit pipeline.
+> All 19 specs pass. Here's how to take it from green tests to a live Worker.
+
+### Prerequisites
+
+- [Bun](https://bun.sh) installed (`bun --version`)
+- [Cloudflare account](https://dash.cloudflare.com) (free tier is enough)
+- `bunx wrangler login` done at least once
+
+### 1 — Create the D1 database
+
+```bash
+bunx wrangler d1 create shortlink
+```
+
+Copy the `database_id` it prints and paste it into `wrangler.toml`:
+
+```toml
+[[d1_databases]]
+database_id = "paste-id-here"   # ← replace REPLACE_ME
+```
+
+### 2 — Generate and apply the migration
+
+```bash
+bun run db:generate          # schema.ts → drizzle/*.sql
+```
+
+> ⚠️ Open the generated `.sql` file and add `) STRICT;` to the end of each
+> `CREATE TABLE` statement before applying — drizzle-kit won't do this for you.
+
+```bash
+bun run db:migrate:local     # apply to local D1 (for wrangler dev)
+```
+
+### 3 — Run locally
+
+```bash
+bun run dev                  # wrangler dev → http://localhost:8787
+```
+
+```bash
+# Shorten a URL
+curl -i -X POST localhost:8787/links \
+  -H 'content-type: application/json' \
+  -d '{"url":"https://example.com"}'
+# → 201 { slug, shortUrl, targetUrl }
+
+# Follow the redirect
+curl -i localhost:8787/<slug>
+# → 302 Location: https://example.com
+
+# Check stats
+curl localhost:8787/api/links/<slug>/stats
+# → 200 { slug, targetUrl, clicks }
+```
+
+### 4 — Deploy to Cloudflare
+
+```bash
+bun run db:migrate           # apply migration to prod D1
+bun run deploy               # wrangler deploy
+```
+
+Set `BASE_URL` in the Cloudflare dashboard (Workers → Settings → Variables)
+to your `workers.dev` subdomain, e.g. `https://shortlink-demo.yourname.workers.dev`.
+
+### Run tests (no D1 needed)
+
+```bash
+bun test   # 19 pass / 0 fail — fake in-memory repo, no network required
+```
+
+---
+
 ## 🎯 Guiding principle: Design for Change
 
 Every command, agent, and skill here serves one principle: **the goal of
