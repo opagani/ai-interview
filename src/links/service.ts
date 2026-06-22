@@ -1,5 +1,5 @@
 // Link service — pure-ish functions over injected deps. Returns Result for
-// expected failures; never throws for them. STUBS until /build-loop (T5–T7).
+// expected failures; never throws for them.
 
 import type { Result } from "../shared/result";
 import { ok, err } from "../shared/result";

@@ -28,7 +28,7 @@
   · story:STORY-3 · depends-on:T2,T3 · parallel-group:services
 - [x] **T8** — `createApp(deps)` router + HTTP shaping (JSON, status codes,
   Location header) in `src/app.ts`. · story:STORY-1,2,3 · depends-on:T5,T6,T7
-- [ ] **T9** — **wire:** `createLink/resolveSlug/getStats` into `createApp`
+- [x] **T9** — **wire:** `createLink/resolveSlug/getStats` into `createApp`
   routes so STORY-1..3 entry-point specs pass through the real handler.
   Acceptance: a real `Request` through `createApp(deps).fetch` produces the
   spec's side effect (201 + persisted link / 302 + recorded click / 200 +
