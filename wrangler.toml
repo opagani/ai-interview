@@ -1,0 +1,20 @@
+# Cloudflare Workers config for the DEMO ShortLink.
+# Run:    bunx wrangler dev          (local, uses a local D1 sqlite file)
+# Deploy: bunx wrangler deploy       (after `wrangler login`)
+#
+# Before first run, create the D1 database and paste its id below:
+#   bunx wrangler d1 create shortlink
+#   -> copy database_id into [[d1_databases]] below
+
+name = "shortlink-demo"
+main = "src/server.ts"
+compatibility_date = "2026-06-01"
+
+[vars]
+BASE_URL = "http://localhost:8787"
+
+[[d1_databases]]
+binding = "DB"                 # exposed to the Worker as env.DB
+database_name = "shortlink"
+database_id = "REPLACE_ME"     # from `wrangler d1 create shortlink`
+migrations_dir = "drizzle"     # drizzle-kit writes migrations here
