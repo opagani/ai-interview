@@ -1,0 +1,3 @@
+# Bun config — presence of this file also signals the bun:test runner.
+[test]
+root = "."
