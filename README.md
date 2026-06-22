@@ -74,6 +74,26 @@ curl localhost:8787/api/links/<slug>/stats
 # → 200 { slug, targetUrl, clicks }
 ```
 
+### TypeScript quiz
+
+The demo includes 11 TypeScript interview questions drawn from the actual
+codebase — easy through hard, each referencing a real file.
+
+```bash
+# Random question
+curl localhost:8787/api/quiz | jq .
+
+# All questions
+curl "localhost:8787/api/quiz?all=true" | jq .
+
+# Reveal the answer for question 1
+curl localhost:8787/api/quiz/1/answer | jq .
+```
+
+Questions cover: discriminated unions, type guards, `readonly`, dependency
+injection, `exactOptionalPropertyTypes`, `noUncheckedIndexedAccess`,
+`Record<string, unknown>` vs `any`, `#` private fields, `verbatimModuleSyntax`.
+
 ### 4 — Deploy to Cloudflare
 
 ```bash
