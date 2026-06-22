@@ -12,7 +12,7 @@
 
 ### 🏗️ Scaffolding
 
-- [ ] **T1** — Scaffold Bun project: `package.json`, `tsconfig.json` (strict), `bunfig.toml`, `.gitignore`, `wrangler.toml` (Workers config with D1 binding placeholder). · story:— · depends-on:— · parallel-group:—
+- [x] **T1** — Scaffold Bun project: `package.json`, `tsconfig.json` (strict), `bunfig.toml`, `.gitignore`, `wrangler.toml` (Workers config with D1 binding placeholder). · story:— · depends-on:— · parallel-group:—
 
 ### 🧱 Foundation (parallel — no shared state)
 
