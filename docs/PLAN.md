@@ -35,7 +35,7 @@
   count). · story:STORY-1,2,3 · depends-on:T8
 - [x] **T10** — `D1LinkRepository` implementing the port over Drizzle/D1.
   · story:— · depends-on:T3,T4 · parallel-group:adapters
-- [ ] **T11** — **wire:** Workers `default.fetch` in `src/server.ts` builds
+- [x] **T11** — **wire:** Workers `default.fetch` in `src/server.ts` builds
   `D1LinkRepository` from `env` and delegates to `createApp`. Acceptance: a
   real request through `server.default.fetch` against a local D1 binding
   shortens + redirects end to end. · story:STORY-1,2,3 · depends-on:T9,T10
