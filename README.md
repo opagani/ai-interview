@@ -50,13 +50,29 @@ bun run db:migrate:local
 bun run db:migrate
 ```
 
-### 3 — Set secrets
+### 3 — Get your Anthropic API key
+
+1. Go to **[console.anthropic.com](https://console.anthropic.com)**
+2. Sign in (or create a free account)
+3. Click **API Keys** in the left sidebar
+4. Click **Create Key**, give it a name, copy it — starts with `sk-ant-...`
+
+**For local dev** — create a `.dev.vars` file in the project root (already gitignored):
 
 ```bash
-# Anthropic API key — never goes in wrangler.toml
-bunx wrangler secret put ANTHROPIC_API_KEY
+# .dev.vars  — never commit this file
+ANTHROPIC_API_KEY=sk-ant-...
+```
 
-# Admin token for POST /api/sessions (overrides the dev placeholder)
+`wrangler dev` picks it up automatically. No flags needed.
+
+**For production** — upload as a Wrangler secret:
+
+```bash
+bunx wrangler secret put ANTHROPIC_API_KEY
+# paste your key at the prompt
+
+# Also set your admin token (overrides the dev placeholder in wrangler.toml)
 bunx wrangler secret put ADMIN_TOKEN
 ```
 

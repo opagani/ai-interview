@@ -146,6 +146,7 @@ dist
 
 # Cloudflare Workers / local SQLite
 .wrangler/
+.dev.vars
 *.sqlite
 *.sqlite-*
 *.db
