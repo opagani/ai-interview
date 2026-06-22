@@ -13,11 +13,11 @@
 
 - [x] **T1** — Scaffold Bun project: `package.json`, `tsconfig` (strict),
   `bunfig.toml`. · story:— · depends-on:— · parallel-group:—
-- [ ] **T2** — `Result<T,E>` type + `ok`/`err` helpers in `src/shared/result.ts`.
+- [x] **T2** — `Result<T,E>` type + `ok`/`err` helpers in `src/shared/result.ts`.
   · story:— · depends-on:T1 · parallel-group:foundation
-- [ ] **T3** — Domain types + `LinkRepository` port in
+- [x] **T3** — Domain types + `LinkRepository` port in
   `src/links/repository.ts`. · story:— · depends-on:T1 · parallel-group:foundation
-- [ ] **T4** — Drizzle schema (`links`, `clicks`) in `src/links/schema.ts`
+- [x] **T4** — Drizzle schema (`links`, `clicks`) in `src/links/schema.ts`
   (STRICT, unique slug, FK cascade). · story:— · depends-on:T1 ·
   parallel-group:foundation
 - [ ] **T5** — `createLink` service (validate URL, gen slug, retry on collision)

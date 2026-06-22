@@ -1,7 +1,6 @@
 // Drizzle SQLite schema — Postgres-portable per sqlite-dev conventions.
 // Declare both tables STRICT in the generated migration (drizzle-kit won't).
 
-import { sql } from "drizzle-orm";
 import {
   sqliteTable,
   integer,
@@ -37,6 +36,3 @@ export const clicks = sqliteTable(
   },
   (t) => ({ linkIdIdx: index("ix_clicks_link_id").on(t.linkId) }),
 );
-
-// Belt-and-suspenders so an unused import never trips a linter in this stub.
-export const _schemaProbe = sql`select 1`;

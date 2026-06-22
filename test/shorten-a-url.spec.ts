@@ -16,7 +16,7 @@ describe("Feature: shorten a URL", () => {
     const target = "https://example.com/some/long/path";
     let status: number;
     let body: { slug: string; shortUrl: string; targetUrl: string };
-    let persisted: Link | null;
+    let persisted: Link | undefined;
 
     beforeAll(async () => {
       const repo: FakeLinkRepository = fakeLinkRepository();

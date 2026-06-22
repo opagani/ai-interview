@@ -29,8 +29,8 @@ export function fakeLinkRepository(): FakeLinkRepository {
       links.push(link);
       return link;
     },
-    async findBySlug(slug: string): Promise<Link | null> {
-      return links.find((l) => l.slug === slug) ?? null;
+    async findBySlug(slug: string): Promise<Link | undefined> {
+      return links.find((l) => l.slug === slug);
     },
     async recordClick(linkId: number): Promise<void> {
       clicks.push(linkId);
