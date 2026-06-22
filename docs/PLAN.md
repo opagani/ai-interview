@@ -25,10 +25,10 @@
 
 ### ⚙️ Services (parallel — share types only)
 
-- [ ] **T8** — `createSession(deps)` service: validate admin token, generate URL-safe token, insert pending session, return `Result`. · story:STORY-1 · depends-on:T2,T3 · parallel-group:services
-- [ ] **T9** — `submitAnswer(deps)` service: append user turn (when non-empty), call `LlmClient.chat`, append assistant turn, advance topic/question index, flip status `pending→active→awaiting_scoring`. Rollback both turns on LLM failure. · story:STORY-3 · depends-on:T2,T3,T4,T6,T7 · parallel-group:services
-- [ ] **T10** — `completeAndScore(deps)` service: load transcript, call `LlmClient.judge`, persist 5 scores (4 topics + overall), flip to `complete`, idempotent on already-complete sessions. · story:STORY-4 · depends-on:T2,T3,T4,T7 · parallel-group:services
-- [ ] **T11** — `getResults(deps)` service: 404 unknown, 409 if not complete, return scores otherwise. · story:STORY-5 · depends-on:T2,T3 · parallel-group:services
+- [x] **T8** — `createSession(deps)` service: validate admin token, generate URL-safe token, insert pending session, return `Result`. · story:STORY-1 · depends-on:T2,T3 · parallel-group:services
+- [x] **T9** — `submitAnswer(deps)` service: append user turn (when non-empty), call `LlmClient.chat`, append assistant turn, advance topic/question index, flip status `pending→active→awaiting_scoring`. Rollback both turns on LLM failure. · story:STORY-3 · depends-on:T2,T3,T4,T6,T7 · parallel-group:services
+- [x] **T10** — `completeAndScore(deps)` service: load transcript, call `LlmClient.judge`, persist 5 scores (4 topics + overall), flip to `complete`, idempotent on already-complete sessions. · story:STORY-4 · depends-on:T2,T3,T4,T7 · parallel-group:services
+- [x] **T11** — `getResults(deps)` service: 404 unknown, 409 if not complete, return scores otherwise. · story:STORY-5 · depends-on:T2,T3 · parallel-group:services
 
 ### 🌐 HTTP entry
 
